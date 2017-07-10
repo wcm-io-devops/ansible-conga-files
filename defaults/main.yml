@@ -1,0 +1,4 @@
+# Expression that is stripped from paths on the destination (e.g. a sub-directory used in the CONGA target directories)
+strip: ''
+# Only paths matching this expression are processed
+filter: ''

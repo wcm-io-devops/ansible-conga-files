@@ -1,0 +1,32 @@
+# Generic CONGA task which gathers the CONGA facts for the current node/role/variant
+# ensures that all conga directories exist and copies over all files that CONGA
+# has generated for that combination.
+
+- name: Setup files and directories lists.
+  set_fact:
+    _directories: "{{ directories | default(conga_directories) }}"
+    _files: "{{ files | default(conga_files_paths) }}"
+
+- name: Filter files and directories lists.
+  set_fact:
+    _directories: "{{ _directories | select('match', filter) | list }}"
+    _files: "{{ _files | select('match', filter) | list }}"
+  when: filter is defined
+
+- name: Ensure CONGA directories.
+  file:
+    path: "{{ base_path }}/{{ item | regex_replace(strip, '') }}"
+    state: directory
+    owner: "{{ owner | default(omit) }}"
+    group: "{{ group | default(omit) }}"
+  with_items: "{{ _directories }}"
+
+- name: Copy CONGA files.
+  copy:
+    src: "{{ conga_config_path }}/{{ item }}"
+    dest: "{{ base_path }}/{{ item | regex_replace(strip, '') }}"
+    owner: "{{ owner | default(omit) }}"
+    group: "{{ group | default(omit) }}"
+    mode: "{{ mode | default(omit)}}"
+  with_items: "{{ _files }}"
+  notify: "{{ handlers | default(omit) }}"
