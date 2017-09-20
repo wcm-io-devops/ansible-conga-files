@@ -49,13 +49,13 @@ This role depends on the [conga-facts](https://github.com/wcm-io-devops/ansible-
 
 Includes the role to copy all files generated in the `apache` directory to  `/etc/httpd` on the target host (without the `apache` prefix) and restarting Apache afterwards.
 
-  - include_role:
-      name: conga-files
-    vars:
-      base_path: "/etc/httpd"
-      strip: "^apache/"
-      filter: "^apache/"
-      handlers: [ restart apache ]
+	 - include_role:
+	     name: conga-files
+	   vars:
+	     base_path: "/etc/httpd"
+	     strip: "^apache/"
+	     filter: "^apache/"
+	     handlers: [ restart apache ]
 
 ## License
 
