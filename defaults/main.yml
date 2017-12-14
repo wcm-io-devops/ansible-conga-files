@@ -1,4 +1,20 @@
+# Path to copy files to on target host (required)
+# conga_files_base_path:
+
+# List of files to copy
+conga_files_files: "{{ conga_files }}"
+# List of directories to create
+conga_files_directories: "{{ conga_directories }}"
+
 # Expression that is stripped from paths on the destination (e.g. a sub-directory used in the CONGA target directories)
-strip: ''
+conga_files_strip: ''
 # Only paths matching this expression are processed
-filter: ''
+conga_files_filter: ''
+
+# Owner, group and mode of the copied files
+# conga_files_owner:
+# conga_files_group:
+# conga_files_mode:
+
+# List of handlers to call on changes
+# conga_files_handlers:

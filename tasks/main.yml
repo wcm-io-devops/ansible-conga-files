@@ -4,29 +4,34 @@
 
 - name: Setup files and directories lists.
   set_fact:
-    _directories: "{{ directories | default(conga_directories) }}"
-    _files: "{{ files | default(conga_files_paths) }}"
+    _conga_directories: "{{ conga_files_directories }}"
+    _conga_files: "{{ conga_files_files }}"
+
+- name: Map list of files to their paths.
+  set_fact:
+    _conga_files: "{{ _conga_files | map(attribute='path') | list }}"
+  when: (_conga_files | first) is mapping
 
 - name: Filter files and directories lists.
   set_fact:
-    _directories: "{{ _directories | select('match', filter) | list }}"
-    _files: "{{ _files | select('match', filter) | list }}"
-  when: filter is defined
+    _conga_directories: "{{ _conga_directories | select('match', conga_files_filter) | list }}"
+    _files: "{{ _conga_files | select('match', conga_files_filter) | list }}"
+  when: conga_files_filter is defined
 
 - name: Ensure CONGA directories.
   file:
-    path: "{{ base_path }}/{{ item | regex_replace(strip, '') }}"
+    path: "{{ conga_files_base_path }}/{{ item | regex_replace(conga_files_strip, '') }}"
     state: directory
-    owner: "{{ owner | default(omit) }}"
-    group: "{{ group | default(omit) }}"
-  with_items: "{{ _directories }}"
+    owner: "{{ conga_files_owner | default(omit) }}"
+    group: "{{ conga_files_group | default(omit) }}"
+  with_items: "{{ _conga_directories }}"
 
 - name: Copy CONGA files.
   copy:
     src: "{{ conga_config_path }}/{{ item }}"
-    dest: "{{ base_path }}/{{ item | regex_replace(strip, '') }}"
-    owner: "{{ owner | default(omit) }}"
-    group: "{{ group | default(omit) }}"
-    mode: "{{ mode | default(omit)}}"
-  with_items: "{{ _files }}"
-  notify: "{{ handlers | default(omit) }}"
+    dest: "{{ conga_files_base_path }}/{{ item | regex_replace(conga_files_strip, '') }}"
+    owner: "{{ conga_files_owner | default(omit) }}"
+    group: "{{ conga_files_group | default(omit) }}"
+    mode: "{{ conga_files_mode | default(omit)}}"
+  with_items: "{{ _conga_files }}"
+  notify: "{{ conga_files_handlers | default(omit) }}"
