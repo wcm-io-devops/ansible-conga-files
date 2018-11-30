@@ -32,6 +32,6 @@
     dest: "{{ conga_files_base_path }}/{{ item | regex_replace(conga_files_strip, '') }}"
     owner: "{{ conga_files_owner | default(omit) }}"
     group: "{{ conga_files_group | default(omit) }}"
-    mode: "{{ conga_files_mode | default(omit)}}"
+    mode: "{{ conga_files_mode | default(omit) }}"
   with_items: "{{ _conga_files }}"
   notify: "{{ conga_files_handlers | default(omit) }}"
