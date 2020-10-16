@@ -9,7 +9,7 @@ This role provides a generic, reusable way to copy all configuration files gener
 
 ## Requirements
 
-This role requires Ansible 2.0 or higher.
+This role requires Ansible 2.7 or higher.
 
 ## Role Variables
 
