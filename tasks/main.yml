@@ -38,7 +38,7 @@
   register: _conga_files_result
   notify: "{{ conga_files_handlers | default(omit) }}"
 
-- name: "Set 'conga_files_changed' to true when changed."
+- name: "Set 'conga_files_changed' to true when changed." # noqa 503
   set_fact:
     conga_files_changed: true
   when: _conga_files_result.changed
