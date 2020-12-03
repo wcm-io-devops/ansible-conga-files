@@ -2,10 +2,11 @@
 # ensures that all conga directories exist and copies over all files that CONGA
 # has generated for that combination.
 
-- name: Setup files and directories lists.
+- name: Setup files, directories lists and result fact.
   set_fact:
     _conga_directories: "{{ conga_files_directories }}"
     _conga_files: "{{ conga_files_files }}"
+    conga_files_changed: false
 
 - name: Map list of files to their paths.
   set_fact:
@@ -36,3 +37,8 @@
   with_items: "{{ _conga_files }}"
   register: _conga_files_result
   notify: "{{ conga_files_handlers | default(omit) }}"
+
+- name: "Set 'conga_files_changed' to true when changed."
+  set_fact:
+    conga_files_changed: true
+  when: _conga_files_result.changed
