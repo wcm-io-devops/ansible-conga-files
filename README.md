@@ -47,6 +47,13 @@ Optional regular expressions used to modify or filter the list of files to be co
 The `conga_files_strip` expression is removed from the files on the target host. This is useful if files were generated with an additional path components for organization (e.g. `apache`).
 The `conga_files_filter` expression is used to filter the list of files to be copied. Only files matching the expression are processed. This is useful if you don't want to copy all files at once or exclude some altogether.
 
+## Result facts
+
+    conga_files_changed
+
+This fact has the value `true` when the deployment of the conga file(s)
+resulted in a change.
+
 ## Dependencies
 
 This role depends on the [wcm_io_devops.conga_facts](https://github.com/wcm-io-devops/ansible-conga-facts) role for supplying the list of files and directories to copy.
